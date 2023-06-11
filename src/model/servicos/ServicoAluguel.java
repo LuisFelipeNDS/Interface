@@ -1,5 +1,7 @@
 package model.servicos;
 
+import java.time.Duration;
+
 import model.entidade.Aluguel;
 import model.entidade.Fatura;
 
@@ -8,17 +10,12 @@ public class ServicoAluguel {
 	private Double valorDia;
 	private Double valorHora;
 	
-	private TaxaBrasil taxaBrasil;
+	private ServicoTaxa taxaTotal;
 
-	public ServicoAluguel(Double valorDia, Double valorHora, TaxaBrasil taxaBrasil) {
+	public ServicoAluguel(Double valorDia, Double valorHora, ServicoTaxa taxaTotal) {			
 		this.valorDia = valorDia;
 		this.valorHora = valorHora;
-		this.taxaBrasil = taxaBrasil;
-	}
-	
-	public void imprimirFatura(Aluguel aluguel) {
-		
-		aluguel.setFatura(new Fatura(50.0, 10.0));
+		this.taxaTotal = taxaTotal;
 	}
 
 	public Double getValorDia() {
@@ -37,14 +34,30 @@ public class ServicoAluguel {
 		this.valorHora = valorHora;
 	}
 
-	public TaxaBrasil getTaxaBrasil() {
-		return taxaBrasil;
+	public ServicoTaxa getTaxaTotal() {
+		return taxaTotal;
 	}
 
-	public void setTaxaBrasil(TaxaBrasil taxaBrasil) {
-		this.taxaBrasil = taxaBrasil;
+	public void setTaxaBrasil(ServicoTaxa taxaTotal) {
+		this.taxaTotal = taxaTotal;
 	}
 	
+	public void imprimirFatura(Aluguel aluguel) {
+		double minutes = Duration.between(aluguel.getInicio(), aluguel.getFim()).toMinutes();		
+		double hours = minutes / 60.0;
+		
+		double pagamento;
+		if (hours <= 12.0) {
+			pagamento = valorHora * Math.ceil(hours);
+		}
+		else {
+			pagamento = valorDia * Math.ceil(hours / 24);
+		}
+
+		double taxa = taxaTotal.taxa(pagamento);
+
+		aluguel.setFatura(new Fatura(pagamento, taxa));
+	}
 	
 	
 	

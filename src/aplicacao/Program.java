@@ -38,8 +38,8 @@ public class Program {
 		
 		System.out.println("Fatura");
 		System.out.println("-----------------------------------");
-		System.out.println("Pagamento basico: " + aluguel.getFatura().getPagamentoBasico());
-		System.out.println("Imposto: " + aluguel.getFatura().getTaxa());
+		System.out.println("Pagamento basico: " + String.format("%.2f", aluguel.getFatura().getPagamentoBasico()));
+		System.out.println("Imposto: " + String.format("%.2f", aluguel.getFatura().getTaxa()));
 		System.out.println("Pagamento total: " + aluguel.getFatura().pagamento());
 
 	

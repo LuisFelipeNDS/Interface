@@ -27,7 +27,7 @@ public class Fatura {
 	}
 	
 	public Double pagamento() {
-		return getPagamentoBasico() - getTaxa();
+		return getPagamentoBasico() + getTaxa();
 	}
 
 }
